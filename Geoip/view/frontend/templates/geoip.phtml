@@ -1,0 +1,36 @@
+<?php
+/**
+ * @var \ATF\Geoip\Block\Geoip $block
+ */
+
+//$block->ip_info("Visitor", "Country Code");
+$GeoipVar = $block->ip_info("Visitor", "Country Code");
+$GeoipVar = 'PH';
+
+if ($GeoipVar !== 'US'): ?>
+    <div id="size_guide_content" class="modal">
+        <?= $block->getChildHtml('atf_pdp_size_guide'); ?>
+    </div>
+
+    <script>
+        require([
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ], function ($) {
+            var geoipModal = $('#size_guide_content').modal({
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'atf-modal geoip',
+                title: '',
+                modalLeftMargin: 0,
+                buttons: []
+            });
+
+            if (localStorage.getItem("geoip") === null || $('body').hasClass('checkout-index-index')) {
+                geoipModal.modal('openModal');
+                localStorage.setItem("geoip", 1);
+            }
+        });
+    </script>
+<?php endif; ?>
